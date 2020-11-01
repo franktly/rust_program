@@ -1,2 +1,2 @@
 # rust_program
-rust program
+rust program language
