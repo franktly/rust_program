@@ -14,8 +14,31 @@ impl Config {
             return Err("not enough arguments");
             // panic!("not enough arguments");
         }
+        /*metod 1*/
         let query = args[1].clone();
         let filename = args[2].clone();
+
+        // load from env
+        let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
+        Ok(Config {
+            query,
+            filename,
+            case_sensitive,
+        })
+    }
+
+    pub fn new_v2(mut args: env::Args) -> Result<Config, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("did not get a query string"),
+        };
+
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("did not get a filename string"),
+        };
 
         // load from env
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
@@ -52,6 +75,13 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     }
 
     results
+}
+
+pub fn search_v2<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    contents
+        .lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
