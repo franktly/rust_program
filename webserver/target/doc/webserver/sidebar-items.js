@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ThreadPool","Create a `ThreadPool` struct to manage all worker thread including creating and send message"]]});
